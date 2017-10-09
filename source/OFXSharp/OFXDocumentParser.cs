@@ -7,68 +7,82 @@ using System.Text;
 
 namespace OFXSharp
 {
-   public class OFXDocumentParser
-   {
-      public OFXDocument Import(FileStream stream)
-      {
-         using (var reader = new StreamReader(stream, Encoding.Default))
-         {
-            return Import(reader.ReadToEnd());
-         }
-      }
+    public class OFXDocumentParser
+    {
+        public OFXDocument Import(FileStream stream)
+        {
+            using (var reader = new StreamReader(stream, Encoding.Default))
+            {
+                return Import(reader.ReadToEnd());
+            }
+        }
 
-      public OFXDocument Import(string ofx)
-      {
-         return ParseOfxDocument(ofx);
-      }
+        public OFXDocument Import(string ofx)
+        {
+            return ParseOfxDocument(ofx);
+        }
 
-      private OFXDocument ParseOfxDocument(string ofxString)
-      {
-         //If OFX file in SGML format, convert to XML
-         if (!IsXmlVersion(ofxString))
-         {
-            ofxString = SGMLToXML(ofxString);
-         }
+        private OFXDocument ParseOfxDocument(string ofxString)
+        {
+            //If OFX file in SGML format, convert to XML
+            if (!IsXmlVersion(ofxString))
+            {
+                ofxString = SGMLToXML(ofxString);
+            }
 
-         return Parse(ofxString);
-      }
+            return Parse(ofxString);
+        }
 
-      private OFXDocument Parse(string ofxString)
-      {
-         OFXDocument ofx = new OFXDocument { AccType = GetAccountType(ofxString) };
-         XmlNode ledgerNode;
-         XmlNode availableNode;
+        private OFXDocument Parse(string ofxString)
+        {
+            OFXDocument ofx = new OFXDocument { AccType = GetAccountType(ofxString) };
+            XmlNode ledgerNode;
+            XmlNode availableNode;
 
             //Load into xml document
             var doc = new XmlDocument();
-         doc.Load(new StringReader(ofxString));
+            doc.Load(new StringReader(ofxString));
 
-         var currencyNode = doc.SelectSingleNode(GetXPath(ofx.AccType, OFXSection.CURRENCY));
+            //Get sign on node from OFX file
+            var signOnNode = doc.SelectSingleNode(Resources.SignOn);
 
-         if (currencyNode != null)
-         {
-            ofx.Currency = currencyNode.FirstChild.Value;
-         }
-         else
-         {
-            throw new OFXParseException("Currency not found");
-         }
+            //If exists, populate signon obj, else throw parse error
+            if (signOnNode != null)
+            {
+                ofx.SignOn = new SignOn(signOnNode);
+            }
+            else
+            {
+                throw new OFXParseException("Sign On information not found");
+            }
 
-         //Get sign on node from OFX file
-         var signOnNode = doc.SelectSingleNode(Resources.SignOn);
+            XmlNode accountNodeRoot = doc.SelectSingleNode("//ACCTINFOTRNRS//ACCTINFORS");
+            if (accountNodeRoot != null)
+            {
+                XmlNodeList accountNodes = accountNodeRoot.SelectNodes(".//ACCTINFO");
+                foreach (XmlNode node in accountNodes)
+                {
+                    AccountInfo ai = new AccountInfo(node);
+                    ofx.AccountInfos.Add(ai);
+                }
+            }
 
-         //If exists, populate signon obj, else throw parse error
-         if (signOnNode != null)
-         {
-            ofx.SignOn = new SignOn(signOnNode);
-         }
-         else
-         {
-            throw new OFXParseException("Sign On information not found");
-         }
 
-         //Get Account information for ofx doc
-         var accountNode = doc.SelectSingleNode(GetXPath(ofx.AccType, OFXSection.ACCOUNTINFO));
+            if (ofx.AccType == AccountType.NA)
+                return ofx;
+
+            var currencyNode = doc.SelectSingleNode(GetXPath(ofx.AccType, OFXSection.CURRENCY));
+            if (currencyNode != null)
+            {
+                ofx.Currency = currencyNode.FirstChild.Value;
+            }
+            else
+            {
+                throw new OFXParseException("Currency not found");
+            }
+
+            //Get Account information for ofx doc
+            var accountNode = doc.SelectSingleNode(GetXPath(ofx.AccType, OFXSection.ACCOUNTINFO));
 
          //If account info present, populate account object
          if (accountNode != null)
@@ -222,18 +236,19 @@ namespace OFXSharp
         /// <param name="file">OFX file want to check</param>
         /// <returns>Account type for account supplied in ofx file</returns>
         private AccountType GetAccountType(string file)
-      {
-        if (file.IndexOf("<CREDITCARDMSGSRSV1>") != -1)
-            return AccountType.CC;
+        {
+            if (file.IndexOf("<CREDITCARDMSGSRSV1>") != -1)
+                return AccountType.CC;
 
-        if (file.IndexOf("<BANKMSGSRSV1>") != -1)
-            return AccountType.BANK;
+            if (file.IndexOf("<BANKMSGSRSV1>") != -1)
+                return AccountType.BANK;
 
-        if (file.IndexOf("<INVSTMTMSGSRSV1>") != -1)
-            return AccountType.INVESTMENT;
+            if (file.IndexOf("<INVSTMTMSGSRSV1>") != -1)
+                return AccountType.INVESTMENT;
 
-        throw new OFXException("Unsupported Account Type");
-      }
+            Console.WriteLine("Undetermined account type");
+            return AccountType.NA;
+        }
 
       /// <summary>
       /// Check if OFX file is in SGML or XML format

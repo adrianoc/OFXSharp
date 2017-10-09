@@ -17,7 +17,10 @@ namespace OFXSharp
 
     public class StockInfo : SECInfo
     {
+        private readonly bool hasUnitPrice;
 
+
+        public bool HasUnitPrice { get { return hasUnitPrice; }  }
         public string StockType { get; set; }
         public string AssetClass { get; set; }
         public string FIAssetClass { get; set; }
@@ -28,7 +31,18 @@ namespace OFXSharp
             UniqueIDType = node.GetValue(".//SECID//UNIQUEIDTYPE");
             SECName = node.GetValue(".//SECNAME");
             Ticker = node.GetValue(".//TICKER");
-            UnitPrice = Convert.ToDecimal(node.GetValue(".//UNITPRICE").Trim());
+
+            string unitPrice = node.GetValue(".//UNITPRICE").Trim();
+
+            if (unitPrice != null && unitPrice != "")
+            {
+                UnitPrice = Convert.ToDecimal(unitPrice);
+                hasUnitPrice = true;
+            }
+            else
+            {
+                hasUnitPrice = false;
+            }
             AsOfDate = node.GetValue(".//DTASOF").ToDate();
             StockType = node.GetValue("//STOCKTYPE");
             AssetClass = node.GetValue(("//ASSETCLASS"));

@@ -5,6 +5,8 @@ namespace OFXSharp
 {
     public class OFXDocument
     {
+        private readonly List<AccountInfo> accountInfos = new List<AccountInfo>();
+
         public DateTime StatementStart { get; set; }
 
         public DateTime StatementEnd { get; set; }
@@ -18,5 +20,9 @@ namespace OFXSharp
         public Account Account { get; set; }
 
         public AccountBalance Balance { get; set; }
+
+        public List<AccountInfo> AccountInfos { get { return accountInfos; } }
     }
 }
+
+
