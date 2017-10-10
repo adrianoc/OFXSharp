@@ -19,7 +19,7 @@ namespace OFXSharp
 
         public string Description { get; set; }
 
-        private static bool GetYNBoolean(XmlNode node, string valueName)
+        protected static bool GetYNBoolean(XmlNode node, string valueName)
         {
             string str = node.GetValue(valueName);
 
@@ -34,9 +34,10 @@ namespace OFXSharp
 
         public AccountInfo(XmlNode node)
         {
+            AccountID = node.GetValue(".//ACCTID");
+
             BankID = node.GetValue(".//BANKID");
             BranchID = node.GetValue(".//BRANCHID");
-            AccountID = node.GetValue(".//ACCTID");
             AccountType = node.GetValue(".//ACCTTYPE");
 
             SupportsDownload = GetYNBoolean(node, ".//SUPTXDL");
@@ -48,6 +49,43 @@ namespace OFXSharp
             Description = node.GetValue(".//DESC");
         }
     }
+
+    public class InvestmentAccountInfo : AccountInfo
+    {
+        public string BrokerID { get; set; }
+
+        public bool IsChecking { get; set; }
+        public string USProductType { get; set; }
+
+        public string InvestmentAccountType { get; set; }
+
+        public string OptionLevel { get; set; }
+
+        public InvestmentAccountInfo(XmlNode info, XmlNode investmentAccountNode)
+            : base(info)
+        {
+            USProductType = investmentAccountNode.GetValue(".//USPRODUCTTYPE");
+            BrokerID = investmentAccountNode.GetValue(".//BROKERID");
+            IsChecking = GetYNBoolean(investmentAccountNode, ".//CHECKING");
+            AccountType = "INVESTMENT";
+
+            InvestmentAccountType = investmentAccountNode.GetValue("..//INVACCTTYPE");
+            OptionLevel = investmentAccountNode.GetValue(".//OPTIONLEVEL");
+
+        }
+    }
+
+
+    public class CCAccountInfo : AccountInfo
+    {
+        public CCAccountInfo(XmlNode info, XmlNode ccAccountNode)
+            : base(info)
+        {
+            AccountType = "CC";
+        }
+    }
+
 }
+
 
 

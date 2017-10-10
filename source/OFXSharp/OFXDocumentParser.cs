@@ -62,8 +62,23 @@ namespace OFXSharp
                 XmlNodeList accountNodes = accountNodeRoot.SelectNodes(".//ACCTINFO");
                 foreach (XmlNode node in accountNodes)
                 {
-                    AccountInfo ai = new AccountInfo(node);
-                    ofx.AccountInfos.Add(ai);
+                    XmlNode investmentAccountNode = node.SelectSingleNode(".//INVACCTINFO");
+                    XmlNode ccAccountNode = node.SelectSingleNode(".//CCACCTINFO");
+                    if (investmentAccountNode != null)
+                    {
+                        InvestmentAccountInfo iai = new InvestmentAccountInfo(node, investmentAccountNode);
+                        ofx.AccountInfos.Add(iai);
+                    }
+                    else if(ccAccountNode != null)
+                    {
+                        CCAccountInfo ccai = new CCAccountInfo(node, ccAccountNode);
+                        ofx.AccountInfos.Add(ccai);
+                    }
+                    else
+                    {
+                        AccountInfo ai = new AccountInfo(node);
+                        ofx.AccountInfos.Add(ai);
+                    }
                 }
             }
 
