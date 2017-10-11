@@ -77,6 +77,8 @@ namespace OFXSharp
 
     public class MutualFundInfo : SECInfo
     {
+        private readonly bool hasUnitPrice;
+        public bool HasUnitPrice { get { return hasUnitPrice; } }
         public string Memo { get; set; }
         public string MutualFundType { get; set; }
 
@@ -86,7 +88,16 @@ namespace OFXSharp
             UniqueIDType = node.GetValue(".//SECID//UNIQUEIDTYPE");
             SECName = node.GetValue(".//SECNAME");
             Ticker = node.GetValue(".//TICKER");
-            UnitPrice = Convert.ToDecimal(node.GetValue(".//UNITPRICE").Trim());
+
+            string unitPrice = node.GetValue(".//UNITPRICE").Trim();
+            if (unitPrice == null || unitPrice == "")
+                hasUnitPrice = false;
+            else
+            {
+                UnitPrice = Convert.ToDecimal(unitPrice);
+                hasUnitPrice = true;
+            }
+
             AsOfDate = node.GetValue(".//DTASOF").ToDate();
             Memo = node.GetValue(".//MEMO");
             MutualFundType = node.GetValue("//MFTYPE");

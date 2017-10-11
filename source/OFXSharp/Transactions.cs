@@ -262,10 +262,14 @@ namespace OFXSharp
             switch (InvTransaction.TransactionType)
             {
                 case "BUYSTOCK":
-                    Markup = Convert.ToDecimal(node.GetValue(".//MARKUP").Trim(), CultureInfo.InvariantCulture);
+                    string strMarkup = node.GetValue(".//MARKUP").Trim();
+                    if (strMarkup != null && strMarkup != "")
+                        Markup = Convert.ToDecimal(strMarkup, CultureInfo.InvariantCulture);
                     break;
                 case "SELLSTOCK":
-                    Markdown = Convert.ToDecimal(node.GetValue(".//MARKDOWN").Trim(), CultureInfo.InvariantCulture);
+                    string strMarkdown = node.GetValue(".//MARKDOWN").Trim();
+                    if (strMarkdown != null && strMarkdown != "")
+                        Markdown = Convert.ToDecimal(strMarkdown, CultureInfo.InvariantCulture);
                     break;
             }
             Commission = Convert.ToDecimal(node.GetValue(".//COMMISSION").Trim(), CultureInfo.InvariantCulture);
