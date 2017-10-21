@@ -351,7 +351,10 @@ namespace OFXSharp
             FITransactionID = node.GetValue(".//FITID");
             Memo = node.GetValue(".//MEMO");
             Units = Convert.ToDecimal(node.GetValue(".//UNITS").Trim(), CultureInfo.InvariantCulture);
-            UnitPrice = Convert.ToDecimal(node.GetValue(".//UNITPRICE").Trim(), CultureInfo.InvariantCulture);
+
+            String unitPrice = node.GetValue(".//UNITPRICE").Trim();
+            if (unitPrice != null && unitPrice != "")
+                UnitPrice = Convert.ToDecimal(unitPrice, CultureInfo.InvariantCulture);
             Action = node.GetValue(".//TFERACTION");
             InvTransaction.TradeDate = node.GetValue(".//DTTRADE").ToDate();
             InvTransaction.SettleDate = node.GetValue(".//DTSETTLE").ToDate();
