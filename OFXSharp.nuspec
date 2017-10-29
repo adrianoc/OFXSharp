@@ -17,6 +17,5 @@
      </metadata>
      <files>
           <file src="source\OFXSharp\bin\Debug\OFXSharp.dll" target="lib\net462\OFXSharp.dll" />
-          <file src="source\OFXSharpCore\bin\Debug\netcoreapp2.0\OFXSharp.dll" target="lib\netcoreapp2.0\OFXSharp.dll" />
      </files>
  </package>

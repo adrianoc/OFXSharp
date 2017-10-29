@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BankAccount" xml:space="preserve">
     <value>OFX/BANKMSGSRSV1/STMTTRNRS/</value>
@@ -123,17 +123,8 @@
   <data name="CCAccount" xml:space="preserve">
     <value>OFX/CREDITCARDMSGSRSV1/CCSTMTTRNRS/</value>
   </data>
-  <data name="InsufficentFunds" xml:space="preserve">
-    <value>There are insufficent funds to pay your {item}. We have allocated what you have evenly between the {item} but there is no room in the budget for anything else, sorry...</value>
-  </data>
   <data name="Investment" xml:space="preserve">
     <value>OFX/INVSTMTMSGSRSV1/INVSTMTTRNRS/</value>
-  </data>
-  <data name="NoFunds" xml:space="preserve">
-    <value>There are no funds for your {item} sorry...</value>
-  </data>
-  <data name="NoMoney" xml:space="preserve">
-    <value>You are spending beyond your means so we have had to use your savings to create this budget. Perhaps you need to review your spending...</value>
   </data>
   <data name="SecurityList" xml:space="preserve">
     <value>OFX/SECLISTMSGSRSV1/SECLIST</value>
