@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml;
+﻿using System.Xml;
 
 namespace OFXSharp
 {
     public class Position
     {
-            public string UniqueID { get; set; }
-            public string UniqueIDType { get; set; }
-            public string HeldInAccount { get; set; }
-            public decimal Units { get; set; }
-            public decimal UnitPrice { get; set; }
-            public decimal MarketValue { get; set; }
-            public DateTime AsOfDate { get; set; }
-            public string PositionType { get; set; }
+        public string UniqueID { get; set; }
+        public string UniqueIDType { get; set; }
+        public string HeldInAccount { get; set; }
+        public decimal Units { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal MarketValue { get; set; }
+        public DateTime AsOfDate { get; set; }
+        public string PositionType { get; set; }
 
         public Position(XmlNode node)
         {

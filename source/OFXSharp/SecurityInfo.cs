@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml;
+﻿using System.Xml;
 
 namespace OFXSharp
 {
@@ -20,7 +18,7 @@ namespace OFXSharp
         private readonly bool hasUnitPrice;
 
 
-        public bool HasUnitPrice { get { return hasUnitPrice; }  }
+        public bool HasUnitPrice { get { return hasUnitPrice; } }
         public string StockType { get; set; }
         public string AssetClass { get; set; }
         public string FIAssetClass { get; set; }

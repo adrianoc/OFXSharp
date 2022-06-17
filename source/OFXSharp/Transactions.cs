@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Xml;
 
 namespace OFXSharp
@@ -361,7 +360,7 @@ namespace OFXSharp
             InvTransaction.UniqueIDType = node.GetValue(".//SECID//UNIQUEIDTYPE");
             InvTransaction.Total = 0;
             InvTransaction.SecuritySubAccount = node.GetValue(".//SUBACCTSEC");
-            
+
         }
     }
     #endregion

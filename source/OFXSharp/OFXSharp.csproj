@@ -1,22 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462</TargetFrameworks>
-    <AssemblyName>OFXSharp</AssemblyName>
-    <RootNamespace>OFXSharp</RootNamespace>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.1.2</Version>
-    <Authors>James Hollingworth and Antonio Milesi Bastos</Authors>
-    <Description>C# OFX file parser</Description>
-    <Copyright>Copyright © milesibastos.com 2014</Copyright>
-    <PackageReleaseNotes>DotNet Core and Framework version available. Added Stock Options quotes.</PackageReleaseNotes>
-    <RepositoryUrl />
-    <PackageProjectUrl>https://github.com/wbwiltshire/OFXSharp</PackageProjectUrl>
-    <AssemblyVersion>1.1.2.0</AssemblyVersion>
-    <FileVersion>1.1.2.0</FileVersion>
-    <ApplicationIcon />
-    <OutputType>Library</OutputType>
-    <StartupObject />
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <LangVersion>10</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
